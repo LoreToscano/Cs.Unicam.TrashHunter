@@ -1,0 +1,183 @@
+﻿@model Cs.Unicam.TrashHunter.MVC.Models.ViewModels.UserViewModel
+@using Cs.Unicam.TrashHunter.Services.DTOs
+@using Cs.Unicam.TrashHunter.Models.Entities
+@{
+    ViewData["Title"] = User.Identity.Name == Model.User.Name ? "Area Personale" : Model.User.CompleteName;
+    int MyPosts = Model.CreatedPosts.Count();
+    var AcceptedPosts = Model.CreatedPosts.Where(p => p.State != State.Rejected).Count() * 100 / MyPosts;
+    var MyPostsCompleted = Model.CreatedPosts.Where(p => p.State == State.Completed).Count() * 100 / MyPosts;
+    var myPostRejected = Model.CreatedPosts.Where(p => p.State == State.Rejected).Count() * 100 / MyPosts;
+    var MyPendingPosts = Model.CreatedPosts.Where(p => p.State == State.Pending).Count() * 100 / MyPosts;
+    var CompletedPosts = Model.CompletedPosts.Count();
+    var karmaLevel = Model.UserRating / 20;
+    var nextKarmaLevel = (Model.UserRating + 20) / 20;
+
+    karmaLevel = Random.Shared.Next(4, 6);
+    nextKarmaLevel = Random.Shared.Next(20, 100);
+
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <svg style="height:150px;width:150px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464l349.5 0c-8.9-63.3-63.3-112-129-112l-91.4 0c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3z" /></svg>
+                        <h5 class="my-3">@Model.User.CompleteName</h5>
+                        <p class="text-muted mb-4">@Model.User.City</p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">See Posts</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-title fw-bold text-center">Post Pubblicati di recente</div>
+                    <div class="card-body p-0">
+                        @if (Model.CreatedPosts.Count() == 0)
+                        {
+                            <p class="mb-0">Non c'è molta attività qui'</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush rounded-3">
+                                @foreach (var post in Model.CreatedPosts.OrderBy(p => p.CreationDate).ThenByDescending(p => p.State))
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                        <i class="bi bi-file-earmark-post bg-@post.State.GetStateColor()"></i>
+                                        <p class="mb-0">@post.Title</p>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Nome Completo</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.User.CompleteName</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.User.Email</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Città</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.User.City</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Ruolo</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.User.Role.GetRoleString()</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-title fw-bold text-center">Statistiche del profilo</div>
+                            <div class="card-body">
+                                <p class="mb-1" style="font-size: .77rem;">Post in attesa di essere completati</p>
+                                <div class="progress rounded" style="height: 5px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="@MyPendingPosts"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="mt-4 mb-1" style="font-size: .77rem;">Post Accettati</p>
+                                <div class="progress rounded " style="height: 5px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 72%" aria-valuenow="@AcceptedPosts"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="mt-4 mb-1" style="font-size: .77rem;">Post Completati</p>
+                                <div class="progress rounded" style="height: 5px;">
+                                    <div class="progress-bar  bg-success" role="progressbar" style="width: 89%" aria-valuenow="@MyPostsCompleted"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="mt-4 mb-1" style="font-size: .77rem;">Post Rifiutati</p>
+                                <div class="progress rounded" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="@myPostRejected"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-title fw-bold text-center">Karma</div>
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <canvas id="karmaChart" width="150" height="150"></canvas>
+                            </div>
+                            <div class="card-body text-center">
+                                <p class="mt-2 fw-bolder">Livello Karma: @karmaLevel</p>
+                                <p class="mt-2">Per il prossimo livello: @(100 - nextKarmaLevel)</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+    var ctx = document.getElementById('karmaChart').getContext('2d');
+    var karmaChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [@nextKarmaLevel, @(100 - nextKarmaLevel)],
+                backgroundColor: ['#8e44ad', '#dcdcdc'], // Gradazione di viola
+                hoverBackgroundColor: ['#9b59b6', '#e0e0e0'] // Gradazione di viola più chiara
+            }],
+           // labels: ['Progresso', 'Rimanente']
+        },
+        options: {
+            cutout: '70%',
+            responsive: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        },
+        plugins: [{
+            beforeDraw: function(chart) {
+                var width = chart.width,
+                    height = chart.height,
+                    ctx = chart.ctx;
+                ctx.restore();
+                var fontSize = (height / 114).toFixed(2);
+                ctx.font = fontSize + "em sans-serif";
+                ctx.textBaseline = "middle";
+                var text = "@karmaLevel",
+                    textX = Math.round((width - ctx.measureText(text).width) / 2),
+                    textY = height / 2;
+                ctx.fillText(text, textX, textY);
+                ctx.save();
+            }
+        }]
+    });
+</script>

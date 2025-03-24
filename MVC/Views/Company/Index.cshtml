@@ -1,0 +1,43 @@
+﻿@model Cs.Unicam.TrashHunter.MVC.Models.ViewModels.CompanyTableViewModel
+@{
+}
+
+<div class="container">
+    <table id="companies-table" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Codice</th>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Numero cupon</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in Model.Companies)
+            {
+                <tr>
+                    <td>@company.CompanyCode</td>
+                    <td>@company.Name</td>
+                    <td>@company.Description</td>
+                    <td>@company.Cupons.Count</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Codice</th>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Numero cupon</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+    var table = new DataTable('#companies-table', {
+        language: {
+            url: '//cdn.datatables.net/plug-ins/2.2.2/i18n/it-IT.json',
+        },
+    });
+</script>
