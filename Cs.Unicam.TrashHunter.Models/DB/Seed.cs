@@ -27,6 +27,7 @@ namespace Cs.Unicam.TrashHunter.Models.DB
                 context.Users.AddRange(users);
                 context.SaveChanges();
 
+
                 var posts = new List<Post>
                 {
                     new Post("Spazzatura", "Molta spazzatura in via farnese", "Tolentino", users.First(u => u.Name == "Lorenzo"), new List<Attachment>()),
@@ -41,6 +42,22 @@ namespace Cs.Unicam.TrashHunter.Models.DB
 
                 context.Posts.AddRange(posts);
                 context.SaveChanges();
+
+                var attachments = new Attachment[]
+                {
+                    new Attachment("png1.png", "Immagine 1", "App_Data/Attachments/png1.png", posts[0].PostId),
+                    new Attachment("png2.png", "Immagine 2", "App_Data/Attachments/png2.png", posts[1].PostId),
+                    new Attachment("png3.png", "Immagine 3", "App_Data/Attachments/png3.png", posts[2].PostId),
+                    new Attachment("png4.png", "Immagine 4", "App_Data/Attachments/png4.png", posts[3].PostId),
+                    new Attachment("png5.png", "Immagine 5", "App_Data/Attachments/png5.png", posts[4].PostId),
+                    new Attachment("png6.png", "Immagine 6", "App_Data/Attachments/png6.png", posts[5].PostId),
+                    new Attachment("png7.png", "Immagine 7", "App_Data/Attachments/png7.png", posts[6].PostId),
+                    new Attachment("png8.png", "Immagine 8", "App_Data/Attachments/png8.png", posts[7].PostId)
+                };
+
+                context.Attachments.AddRange(attachments);
+                context.SaveChanges();
+
             }
 
 

@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="App_Data\Attachments\png1.png" />
+    <None Remove="App_Data\Attachments\png2.png" />
+    <None Remove="App_Data\Attachments\png3.png" />
+    <None Remove="App_Data\Attachments\png4.png" />
+    <None Remove="App_Data\Attachments\png5.png" />
+    <None Remove="App_Data\Attachments\png6.png" />
+    <None Remove="App_Data\Attachments\png7.png" />
+    <None Remove="App_Data\Attachments\png8.png" />
+    <None Remove="App_Data\Attachments\png9.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
@@ -17,6 +29,36 @@
   <ItemGroup>
     <ProjectReference Include="..\Cs.Unicam.TrashHunter.Models\Cs.Unicam.TrashHunter.Models.csproj" />
     <ProjectReference Include="..\Cs.Unicam.TrashHunter.Services\Cs.Unicam.TrashHunter.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="App_Data\Attachments\png1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="App_Data\Attachments\png9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
